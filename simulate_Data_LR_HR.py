@@ -142,7 +142,7 @@ def simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2):
 
     return LR_data_max_Featurematrix, LR_data_max_x, LR_data_max_Labels, LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, HR_data_Featurematrix, HR_data_x, HR_data_Labels
 
-#LR_data_max_Featurematrix, LR_data_max_x, LR_data_max_Labels, LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, HR_data_Featurematrix, HR_data_x, HR_data_Labels = simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2)
+LR_data_max_Featurematrix, LR_data_max_x, LR_data_max_Labels, LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, HR_data_Featurematrix, HR_data_x, HR_data_Labels = simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2)
 
 
 # #HR FEATURE MATRIX
@@ -158,10 +158,6 @@ def simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2):
 # for i in range(0, len(HR_data_x)):
 #
 #     workbook = xlsxwriter.Workbook('HR_data_x_{0}.xlsx'.format(i))
-#     if workbook:
-#         print('YEZZZZ')
-#     else:
-#         print('NOOO')
 #     worksheet = workbook.add_worksheet()
 #
 #     col=0
@@ -194,10 +190,6 @@ def simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2):
 # for i in range(0, len(LR_data_max_x)):
 #
 #     workbook = xlsxwriter.Workbook('LR_data_max_x_{0}.xlsx'.format(i))
-#     if workbook:
-#         print('YEZZZZ')
-#     else:
-#         print('NOOO')
 #     worksheet = workbook.add_worksheet()
 #
 #     col=0
@@ -229,10 +221,6 @@ def simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2):
 # for i in range(0, len(LR_data_av_x)):
 #
 #     workbook = xlsxwriter.Workbook('LR_data_av_x_{0}.xlsx'.format(i))
-#     if workbook:
-#         print('YEZZZZ')
-#     else:
-#         print('NOOO')
 #     worksheet = workbook.add_worksheet()
 #
 #     col=0
@@ -246,5 +234,5 @@ def simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2):
 #
 # col=0
 # for row, data in enumerate(LR_data_av_Labels):
-#     worksheet.write_row(row, col, dat 1a)
+#     worksheet.write_row(row, col, data)
 # workbook.close()
