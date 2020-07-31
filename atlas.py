@@ -64,3 +64,4 @@ def atlas(train_data, train_labels):
         atlas_c2 = C2[0][:][:]
 
     CBT = snf.snf([atlas_c1, atlas_c2], K=5, t=T) # Global connectional brain template
+    return CBT

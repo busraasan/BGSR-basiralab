@@ -122,4 +122,4 @@ index = np.arange(0, len(LR_data_av_Labels))
 for test_index in range(0, len(LR_data_av_Labels)):
 
     train_data, train_labels, test_data, test_label = Leave_one_out_cross_validation(LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, test_index, index)
-    atlas(train_data, train_labels)
+    CBT = atlas(train_data, train_labels)
