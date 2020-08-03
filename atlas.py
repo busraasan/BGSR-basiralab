@@ -8,7 +8,6 @@ def atlas(train_data, train_labels):
     z = np.zeros((1,1))
     k = np.zeros((len(train_labels), len(train_data[1])*len(train_data[1])))
 
-    print(train_data)
     for i in range(0, len(train_labels)):
 
         k1 = train_data[i][:][:]

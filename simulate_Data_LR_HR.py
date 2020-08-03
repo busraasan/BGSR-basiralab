@@ -82,12 +82,6 @@ def simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2):
                     for k in range(ip, ic+1):
                         n = 0
                         for l in range(jp, jc+1):
-                            # print("o: {0}".format(o))
-                            # print("mm: {0}".format(mm))
-                            # print("n: {0}".format(n))
-                            # print("i: {0}".format(i))
-                            # print("k: {0}".format(k))
-                            # print("l: {0}".format(l))
                             LR[o][mm][n] = np.squeeze(data1[i][k][l])
                             n = n+1
                         mm = mm+1
@@ -142,7 +136,7 @@ def simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2):
 
     return LR_data_max_Featurematrix, LR_data_max_x, LR_data_max_Labels, LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, HR_data_Featurematrix, HR_data_x, HR_data_Labels
 
-LR_data_max_Featurematrix, LR_data_max_x, LR_data_max_Labels, LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, HR_data_Featurematrix, HR_data_x, HR_data_Labels = simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2)
+#LR_data_max_Featurematrix, LR_data_max_x, LR_data_max_Labels, LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, HR_data_Featurematrix, HR_data_x, HR_data_Labels = simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2)
 
 
 # #HR FEATURE MATRIX
