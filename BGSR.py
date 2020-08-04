@@ -45,10 +45,9 @@
 
 import numpy as np
 import snf
-import SIMLR_PY.SIMLR
+import SIMLR_PY.SIMLR as SIMLR
 from atlas import atlas
 import networkx as nx
-import matplotlib.pyplot as plt
 
 def BGSR(train_data,train_labels,HR_features,kn):
 
@@ -103,6 +102,24 @@ def BGSR(train_data,train_labels,HR_features,kn):
              c_closeness[i][j] = closeness(G, residual[i][:][:])[j]
              c_betweenness[i][j] = nx.betweenness_centrality(G, weight=True)[j]
 
-    print(c_degree)
-    print(c_closeness)
-    print(c_betweenness)
+    simlr1 = SIMLR.SIMLR_LARGE(1,10,0) #The first input is number of rank (clusters) and the second input is number of neighbors.The third one is an binary indicator whether to use memory-saving mode.You can turn it on when the number of cells are extremely large to save some memory but with the cost of efficiency.
+    S1, F1, val1, ind1 = simlr1.fit(c_degree)
+    y_pred_X1 = simlr1.fast_minibatch_kmeans(F1,1)
+
+    simlr2 = SIMLR.SIMLR_LARGE(1,10,0)
+    S2, F2, val2, ind2 = simlr2.fit(c_closeness)
+    y_pred_X2 = simlr2.fast_minibatch_kmeans(F2,1)
+
+    simlr3 = SIMLR.SIMLR_LARGE(1,10,0)
+    S3, F3, val3, ind3 = simlr3.fit(c_betweenness)
+    y_pred_X3 = simlr3.fast_minibatch_kmeans(F3,1)
+
+    K = 20  # number of neighbors, usually (10~30)
+    alpha = 0.5 # hyperparameter, usually (0.3~0.8)
+    T = 20  # Number of Iterations, usually (10~20)
+
+    wp1 = snf.make_affinity(F1, K=K, mu=alpha)
+    wp2 = snf.make_affinity(F2, K=K, mu=alpha)
+    wp3 = snf.make_affinity(F3, K=K, mu=alpha)
+    F = snf.snf([wp1, wp2, wp3], K=K, alpha=alpha, t=T) #Fused similarity matrix
+    print(F)
