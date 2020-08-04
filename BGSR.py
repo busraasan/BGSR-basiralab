@@ -52,19 +52,20 @@ import matplotlib.pyplot as plt
 
 def BGSR(train_data,train_labels,HR_features,kn):
 
+    #These are a reproduction of the closeness, degrees and isDirected functions of aeolianine since I couldn't find a compatible functions in python.
     def isDirected(adj):
-        S = True
+
+        adj_transpose = np.transpose(adj)
         for i in range(len(adj)):
             for j in range(len(adj[0])):
-                if adj[j][i] == np.transpose(adj)[j][i]:
-                    S = False
-        return S
+                if adj[j][i] != adj_transpose[j][i]:
+                    return True
+        return False
 
     def degrees(adj):
 
         indeg = np.sum(adj, axis=1)
         outdeg = np.sum(np.transpose(adj), axis=0)
-
         if isDirected(adj):
             deg = indeg + outdeg #total degree
         else: #undirected graph: indeg=outdeg
@@ -72,7 +73,6 @@ def BGSR(train_data,train_labels,HR_features,kn):
 
         return deg
 
-    #This is a reproduction of the closeness function of aeolianine since I couldn't find a compatible closeness function in python.
     def closeness(G, adj):
 
         c = np.zeros((len(adj),1))
@@ -89,7 +89,6 @@ def BGSR(train_data,train_labels,HR_features,kn):
     CBT = atlas(train_data, train_labels)
     # (2) Proposed CBT-guided graph super-resolution
     c_degree = np.zeros((sz1, sz2))
-    c_degree2 = np.zeros((sz1, sz2))
     c_closeness = np.zeros((sz1, sz2))
     c_betweenness = np.zeros((sz1, sz2))
     residual = np.zeros((len(train_data), len(train_data[1]), len(train_data[1])))
@@ -98,14 +97,12 @@ def BGSR(train_data,train_labels,HR_features,kn):
 
         residual[i][:][:] = np.abs(train_data[i][:][:] - CBT) #residual brain graph
         G = nx.from_numpy_matrix(np.array(residual[i][:][:]))
-        #c_degree2 = degrees(residual[i][:][:])
         for j in range(0, sz2):
-             c_degree2[i][j] = degrees(residual[i][:][:])[j]
-             c_degree[i][j] = G.degree(weight="weight")[j]
-             #c_closeness[i][j] = closeness(G, residual[i][:][:])[j]
-             #c_betweenness[i][j] = nx.betweenness_centrality(G, weight=True)[j]
+             c_degree[i][j] = degrees(residual[i][:][:])[j]
+             #c_degree[i][j] = G.degree(weight="weight")[j]
+             c_closeness[i][j] = closeness(G, residual[i][:][:])[j]
+             c_betweenness[i][j] = nx.betweenness_centrality(G, weight=True)[j]
 
-    #print(c_degree)
-    print(c_degree2)
+    print(c_degree)
     print(c_closeness)
-    #print(c_betweenness)
+    print(c_betweenness)
