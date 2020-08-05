@@ -2,6 +2,9 @@ import numpy as np
 from simulate_Data_LR_HR import simulate_Data_LR_HR
 from BGSR import BGSR
 import xlsxwriter
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_absolute_error
+from scipy.stats import pearsonr
 
 mu1 = 0.8 # Mean parameter of the first Gaussian distribution
 sigma1 = 0.4 # Standard deviation parameter of the first Gaussian distribution
@@ -25,7 +28,58 @@ def Leave_one_out_cross_validation(LR_average_Featurematrix, LR_data_av_x, LR_da
 LR_data_max_Featurematrix, LR_data_max_x, LR_data_max_Labels, LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, HR_data_Featurematrix, HR_data_x, HR_data_Labels = simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2)
 
 index = np.arange(0, len(LR_data_av_Labels))
+pHR_all = np.zeros((len(LR_data_av_Labels), len(LR_average_Featurematrix[1])))
+GT_HR = np.zeros((len(HR_data_x[1]), len(HR_data_x[1])))
+
 for test_index in range(0, len(LR_data_av_Labels)):
 
     train_data, train_labels, test_data, test_label = Leave_one_out_cross_validation(LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, test_index, index)
-    BGSR(train_data, train_labels, HR_data_Featurematrix, kn)
+    pHR = BGSR(train_data, train_labels, HR_data_Featurematrix, kn)
+    for j in range(len(pHR)):
+        pHR_all[test_index][j] = pHR[j]
+
+# Display Ground truth of the last subject
+GT_HR = HR_data_x[len(HR_data_Labels)-1][:][:]
+fig1 = plt.figure(1)
+plt.imshow(GT_HR)
+plt.title(label="Ground truth HR")
+#plt.show()
+
+# Display the LR matrix of the last subject
+GT_LR = LR_data_av_x[len(LR_data_av_Labels)-1][:][:]
+fig2 = plt.figure(2)
+plt.imshow(GT_LR)
+plt.title(label="LR")
+
+# Display of the predicted HR of the last subject
+pred_HR = np.reshape(pHR, (len(GT_HR), len(GT_HR)))
+pred_HR = pred_HR + np.transpose(pred_HR)
+fig3 = plt.figure(3)
+plt.imshow(pred_HR)
+plt.title(label="Predicted HR")
+
+# Display of the residual between predicted and GT HR the last subject
+RES = np.abs(GT_HR - pred_HR)
+fig4 = plt.figure(4)
+plt.imshow(RES)
+plt.title(label="Residual between predicted HR and GT HR")
+
+MAE = mean_absolute_error(HR_data_Featurematrix, pHR_all)
+
+z = np.zeros((1,1))
+HR_vector = np.zeros((0, 1))
+pHR_all_vector = np.zeros((0, 1))
+
+# vectorizing HR_data_Featurematrix and pHR_all into 1D vector k2.
+for ii in range(0, len(HR_data_Featurematrix[1])):
+    for jj in range(0, len(HR_data_Featurematrix)):
+        z[0,0] = HR_data_Featurematrix[jj,ii]
+        HR_vector = np.append(HR_vector, z, axis=0)
+        z[0,0] = pHR_all[jj,ii]
+        pHR_all_vector = np.append(pHR_all_vector, z, axis=0)
+
+#PC = pearsonr(HR_vector.tolist(), pHR_all_vector.tolist())
+#PC = pearsonr(np.transpose(HR_data_Featurematrix), np.transpose(pHR_all))
+#PC = np.corrcoef(HR_data_Featurematrix, pHR_all)
+#print(PC)
+plt.show()
