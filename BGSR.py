@@ -84,8 +84,10 @@ def BGSR(train_data,train_labels,HR_features,kn):
         return c
 
     sz1, sz2, sz3 = train_data.shape
+
     # (1) Estimation of a connectional brain template (CBT)
     CBT = atlas(train_data, train_labels)
+    
     # (2) Proposed CBT-guided graph super-resolution
     c_degree = np.zeros((sz1, sz2))
     c_closeness = np.zeros((sz1, sz2))
@@ -124,5 +126,16 @@ def BGSR(train_data,train_labels,HR_features,kn):
     wp1 = snf.make_affinity(S1.toarray(), K=K, mu=alpha)
     wp2 = snf.make_affinity(S2.toarray(), K=K, mu=alpha)
     wp3 = snf.make_affinity(S3, K=K, mu=alpha)
-    F = snf.snf([wp1, wp2, wp3], K=K, alpha=alpha, t=T) #Fused similarity matrix
-    
+    FSM = snf.snf([wp1, wp2, wp3], K=K, alpha=alpha, t=T) #Fused similarity matrix
+    FSM_sorted = np.sort(FSM, axis=0)
+
+    ind = np.zeros((kn,1))
+    HR_ind = np.zeros((kn, len(HR_features[1])))
+    for i in range(1, kn+1):
+         a,b,pos = np.intersect1d(FSM_sorted[len(FSM_sorted)-i][0],FSM, return_indices=True)
+         ind[i-1] = pos
+         for j in range(len(HR_features[1])):
+             HR_ind[i-1][j] = HR_features[int(ind[i-1][0])][j]
+
+    pHR = np.mean(HR_ind, axis=0)
+    return pHR
