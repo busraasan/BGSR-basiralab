@@ -36,7 +36,7 @@
 #
 # To test BGSR on random data, we defined the function 'simulateData_LR_HR' where the size of the dataset is chosen by the user.
 #  ---------------------------------------------------------------------
-#      Copyright 2019 Islem Mhiri, Sousse University.
+#      Copyright 2020 Busra Asan, Istanbul Technical University.
 #      Please cite the above paper if you use this code.
 #      All rights reserved.
 #      """
