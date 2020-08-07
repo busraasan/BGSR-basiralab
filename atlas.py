@@ -48,7 +48,7 @@ def atlas(train_data, train_labels):
         for i in range(len(C)):
             datap.append(C[i][:][:])
         affinity_networks = snf.make_affinity(datap, K=K, mu=alpha) #The first step in SNF is converting these data arrays into similarity (or "affinity") networks.
-        fused_network_atlas_C = snf.snf(affinity_networks, K=K, alpha=alpha, t=T) #ASK PARAMETERS. Once we have our similarity networks we can fuse them together
+        fused_network_atlas_C = snf.snf(affinity_networks, K=K, alpha=alpha, t=T) # Once we have our similarity networks we can fuse them together.
         return fused_network_atlas_C
 
     if C1.shape[0] > 1:
@@ -60,6 +60,8 @@ def atlas(train_data, train_labels):
         atlas_c2 = network_atlas(C2, K, alpha, T) # Second cluster-specific CBT
     else:
         atlas_c2 = C2[0][:][:]
+
+    # SNF
 
     CBT = snf.snf([atlas_c1, atlas_c2], K=K, t=T) # Global connectional brain template
     return CBT

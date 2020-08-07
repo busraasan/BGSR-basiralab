@@ -34,13 +34,14 @@ def simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2):
         m = int(input('Please choose a number > 20 and a multiple of 4: '))
 
     N = c1 + c2
-    datac1 = np.random.normal(mu1, sigma1, [c1, m, m])
-    datac2 = np.random.normal(mu2, sigma2, [c2, m, m])
+    datac1 = np.random.normal(mu1, sigma1, [c1, m, m]) # Normal random distribution
+    datac2 = np.random.normal(mu2, sigma2, [c2, m, m]) # Normal random distribution
     data1 = np.concatenate((datac1, datac2), axis=0)
 
-    #creating a 1D vector from the entries of datac1 and datac2 vectors in order to draw a histogram graph.
+    # Creating a 1D vector from the entries of datac1 and datac2 vectors in order to draw a histogram graph.
     datac1_vector = datac1.flatten()
     datac2_vector = datac2.flatten()
+    # Drawing samples from two different distributions to simulate both classes
     plt.hist(datac1_vector, bins = 115, edgecolor=(0, 1, 0, 1), fc=(0, 1, 0, 0.8))
     plt.hist(datac2_vector, bins = 115, edgecolor=(0, 0, 1, 0.4), fc=(0, 0, 1, 0.3))
     plt.show()
@@ -49,7 +50,6 @@ def simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2):
     AV = np.zeros((N, int(m/4), int(m/4)))
     maxi = np.zeros((N, int(m/4), int(m/4)))
     Featurematrix = np.zeros((0,m*m))
-    #x = np.zeros((0,1))
     z = np.zeros((1,1))
 
     for i in range(0,N):
@@ -63,7 +63,6 @@ def simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2):
             for jj in range(0,m):
                 z[0,0] = t[jj,ii]
                 x = np.append(x, z, axis=0)
-        #x = np.reshape(x, (1,m*m))
         x1 = np.transpose(x) #transpose of x is x1
         Featurematrix = np.append(Featurematrix, x1, axis=0)
 
@@ -109,8 +108,8 @@ def simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2):
                 AV[i][b1][a1] = np.mean(np.mean(q1, axis=0), axis = 0)
 
     def pooling_LR_data(max_av):
-        t = np.triu(np.squeeze(max_av[i,:,:]),1)
-        #vectorizing t into 1 column vector
+        t = np.triu(np.squeeze(max_av[i,:,:]),1) # Upper triangular part of matrix
+        #vectorizing t (triangular matrix) into 1 column vector
         x = np.zeros((0,1))
         for ii in range(0,int(m/4)):
             for jj in range(0,int(m/4)):
@@ -134,99 +133,4 @@ def simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2):
     HR_data_x = data1
     HR_data_Labels = np.concatenate((np.ones((c1,1)),-1*np.ones((c2,1))), axis=0)
 
-    return LR_data_max_Featurematrix, LR_data_max_x, LR_data_max_Labels, LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, HR_data_Featurematrix, HR_data_x, HR_data_Labels
-
-#LR_data_max_Featurematrix, LR_data_max_x, LR_data_max_Labels, LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, HR_data_Featurematrix, HR_data_x, HR_data_Labels = simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2)
-
-
-# #HR FEATURE MATRIX
-# workbook = xlsxwriter.Workbook('HR_data_Featurematrix.xlsx')
-# worksheet = workbook.add_worksheet()
-#
-# col=0
-# for row, data in enumerate(HR_data_Featurematrix):
-#     worksheet.write_row(row, col, data)
-# workbook.close()
-#
-# #HR DATA
-# for i in range(0, len(HR_data_x)):
-#
-#     workbook = xlsxwriter.Workbook('HR_data_x_{0}.xlsx'.format(i))
-#     worksheet = workbook.add_worksheet()
-#
-#     col=0
-#     for row, data in enumerate(HR_data_x[i]):
-#         worksheet.write_row(row, col, data)
-#     workbook.close()
-#
-# #HR LABELS
-# workbook = xlsxwriter.Workbook('HR_data_Labels.xlsx')
-# worksheet = workbook.add_worksheet()
-#
-# col=0
-# for row, data in enumerate(HR_data_Labels):
-#     worksheet.write_row(row, col, data)
-# workbook.close()
-#
-#
-#
-#
-# #LR MAX FEATURE MATRIX
-# workbook = xlsxwriter.Workbook('LR_data_max_Featurematrix.xlsx')
-# worksheet = workbook.add_worksheet()
-#
-# col=0
-# for row, data in enumerate(LR_data_max_Featurematrix):
-#     worksheet.write_row(row, col, data)
-# workbook.close()
-#
-# #LR MAX DATA
-# for i in range(0, len(LR_data_max_x)):
-#
-#     workbook = xlsxwriter.Workbook('LR_data_max_x_{0}.xlsx'.format(i))
-#     worksheet = workbook.add_worksheet()
-#
-#     col=0
-#     for row, data in enumerate(LR_data_max_x[i]):
-#         worksheet.write_row(row, col, data)
-#     workbook.close()
-#
-# #LR MAX LABELS
-# workbook = xlsxwriter.Workbook('LR_data_max_Labels.xlsx')
-# worksheet = workbook.add_worksheet()
-#
-# col=0
-# for row, data in enumerate(LR_data_max_Labels):
-#     worksheet.write_row(row, col, data)
-# workbook.close()
-#
-#
-#
-# #LR AV FEATURE MATRIX
-# workbook = xlsxwriter.Workbook('LR_average_Featurematrix.xlsx')
-# worksheet = workbook.add_worksheet()
-#
-# col=0
-# for row, data in enumerate(LR_average_Featurematrix):
-#     worksheet.write_row(row, col, data)
-# workbook.close()
-#
-# #LR AV DATA
-# for i in range(0, len(LR_data_av_x)):
-#
-#     workbook = xlsxwriter.Workbook('LR_data_av_x_{0}.xlsx'.format(i))
-#     worksheet = workbook.add_worksheet()
-#
-#     col=0
-#     for row, data in enumerate(LR_data_av_x[i]):
-#         worksheet.write_row(row, col, data)
-#     workbook.close()
-#
-# #LR AV LABELS
-# workbook = xlsxwriter.Workbook('LR_data_av_Labels.xlsx')
-# worksheet = workbook.add_worksheet()
-#
-# col=0
-# for row, data in enumerate(LR_data_av_Labels):
-#     worksheet.write_row(row, col, data)
-# workbook.close()
+    return LR_data_max_Featurematrix, LR_data_max_x, LR_data_max_Labels, LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, HR_data_Featurematrix, HR_data_x, HR_data_Labels, c1, c2

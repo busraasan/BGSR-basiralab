@@ -1,10 +1,9 @@
 import numpy as np
 from simulate_Data_LR_HR import simulate_Data_LR_HR
 from BGSR import BGSR
-import xlsxwriter
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_absolute_error
-from scipy.stats import pearsonr
+import math
 
 mu1 = 0.8 # Mean parameter of the first Gaussian distribution
 sigma1 = 0.4 # Standard deviation parameter of the first Gaussian distribution
@@ -13,6 +12,29 @@ mu2 = 0.7 # Mean parameter of the second Gaussian distribution
 sigma2 = 0.6 # Standard deviation parameter of the second Gaussian distribution
 
 kn = 10 # Number of selected features
+
+# Functions for Pearson Correlation by Martin Thoma.
+def average(x):
+    assert len(x) > 0
+    return float(sum(x)) / len(x)
+
+def pearson_def(x, y):
+    assert len(x) == len(y)
+    n = len(x)
+    assert n > 0
+    avg_x = average(x)
+    avg_y = average(y)
+    diffprod = 0
+    xdiff2 = 0
+    ydiff2 = 0
+    for idx in range(n):
+        xdiff = x[idx] - avg_x
+        ydiff = y[idx] - avg_y
+        diffprod += xdiff * ydiff
+        xdiff2 += xdiff * xdiff
+        ydiff2 += ydiff * ydiff
+
+    return diffprod / math.sqrt(xdiff2 * ydiff2)
 
 def Leave_one_out_cross_validation(LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, test_index, index):
 
@@ -25,7 +47,20 @@ def Leave_one_out_cross_validation(LR_average_Featurematrix, LR_data_av_x, LR_da
 
     return train_data, train_labels, test_data, test_label
 
-LR_data_max_Featurematrix, LR_data_max_x, LR_data_max_Labels, LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, HR_data_Featurematrix, HR_data_x, HR_data_Labels = simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2)
+LR_data_max_Featurematrix, LR_data_max_x, LR_data_max_Labels, LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, HR_data_Featurematrix, HR_data_x, HR_data_Labels, c1, c2 = simulate_Data_LR_HR(mu1, sigma1, mu2, sigma2)
+
+K1 = int(input("Select the number of neighbors for clusters: "))
+while not K1:
+    K1 = int(input('Please give a number: '))
+while K1 > c1 or K1 > c2:
+    K1 = int(input('Please choose a number smaller than number of groups: '))
+
+K2 = int(input("Select the number of neighbors for fused similarity matrix construction: "))
+while not K2:
+    K2 = int(input('Please give a number: '))
+while K2 > c1 or K1 > c2:
+    K2 = int(input('Please choose a number smaller than number of groups: '))
+
 
 index = np.arange(0, len(LR_data_av_Labels))
 pHR_all = np.zeros((len(LR_data_av_Labels), len(LR_average_Featurematrix[1])))
@@ -34,7 +69,7 @@ GT_HR = np.zeros((len(HR_data_x[1]), len(HR_data_x[1])))
 for test_index in range(0, len(LR_data_av_Labels)):
 
     train_data, train_labels, test_data, test_label = Leave_one_out_cross_validation(LR_average_Featurematrix, LR_data_av_x, LR_data_av_Labels, test_index, index)
-    pHR = BGSR(train_data, train_labels, HR_data_Featurematrix, kn)
+    pHR = BGSR(train_data, train_labels, HR_data_Featurematrix, kn, K1, K2)
     for j in range(len(pHR)):
         pHR_all[test_index][j] = pHR[j]
 
@@ -70,7 +105,7 @@ z = np.zeros((1,1))
 HR_vector = np.zeros((0, 1))
 pHR_all_vector = np.zeros((0, 1))
 
-# vectorizing HR_data_Featurematrix and pHR_all into 1D vector k2.
+# vectorizing HR_data_Featurematrix and pHR_all into 1D vector.
 for ii in range(0, len(HR_data_Featurematrix[1])):
     for jj in range(0, len(HR_data_Featurematrix)):
         z[0,0] = HR_data_Featurematrix[jj,ii]
@@ -78,8 +113,13 @@ for ii in range(0, len(HR_data_Featurematrix[1])):
         z[0,0] = pHR_all[jj,ii]
         pHR_all_vector = np.append(pHR_all_vector, z, axis=0)
 
-#PC = pearsonr(HR_vector.tolist(), pHR_all_vector.tolist())
-#PC = pearsonr(np.transpose(HR_data_Featurematrix), np.transpose(pHR_all))
-#PC = np.corrcoef(HR_data_Featurematrix, pHR_all)
-#print(PC)
+
+PC = pearson_def(HR_vector, pHR_all_vector)
+
+print("MAE")
+print(MAE)
+
+print("Pearson Correlation")
+print(PC)
+
 plt.show()

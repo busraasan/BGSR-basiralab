@@ -49,7 +49,7 @@ import SIMLR_PY.SIMLR as SIMLR
 from atlas import atlas
 import networkx as nx
 
-def BGSR(train_data,train_labels,HR_features,kn):
+def BGSR(train_data,train_labels,HR_features,kn, K1, K2):
 
     #These are a reproduction of the closeness, degrees and isDirected functions of aeolianine since I couldn't find a compatible functions in python.
     def isDirected(adj):
@@ -87,8 +87,9 @@ def BGSR(train_data,train_labels,HR_features,kn):
 
     # (1) Estimation of a connectional brain template (CBT)
     CBT = atlas(train_data, train_labels)
-    
+
     # (2) Proposed CBT-guided graph super-resolution
+    # Initialization
     c_degree = np.zeros((sz1, sz2))
     c_closeness = np.zeros((sz1, sz2))
     c_betweenness = np.zeros((sz1, sz2))
@@ -96,37 +97,38 @@ def BGSR(train_data,train_labels,HR_features,kn):
 
     for i in range(sz1):
 
-        residual[i][:][:] = np.abs(train_data[i][:][:] - CBT) #residual brain graph
+        residual[i][:][:] = np.abs(train_data[i][:][:] - CBT) #Residual brain graph
         G = nx.from_numpy_matrix(np.array(residual[i][:][:]))
         for j in range(0, sz2):
-             c_degree[i][j] = degrees(residual[i][:][:])[j]
-             #c_degree[i][j] = G.degree(weight="weight")[j]
-             c_closeness[i][j] = closeness(G, residual[i][:][:])[j]
-             c_betweenness[i][j] = nx.betweenness_centrality(G, weight=True)[j]
+             c_degree[i][j] = degrees(residual[i][:][:])[j] #Degree matrix
+             c_closeness[i][j] = closeness(G, residual[i][:][:])[j] #Closeness matrix
+             c_betweenness[i][j] = nx.betweenness_centrality(G, weight=True)[j] #Betweenness matrix
 
-    simlr1 = SIMLR.SIMLR_LARGE(1,10,0) #The first input is number of rank (clusters) and the second input is number of neighbors.The third one is an binary indicator whether to use memory-saving mode.You can turn it on when the number of cells are extremely large to save some memory but with the cost of efficiency.
+    # Degree similarity matrix
+    simlr1 = SIMLR.SIMLR_LARGE(1,K1,0) #The first input is number of rank (clusters) and the second input is number of neighbors.The third one is an binary indicator whether to use memory-saving mode.You can turn it on when the number of cells are extremely large to save some memory but with the cost of efficiency.
     S1, F1, val1, ind1 = simlr1.fit(c_degree)
     y_pred_X1 = simlr1.fast_minibatch_kmeans(F1,1)
 
-    simlr2 = SIMLR.SIMLR_LARGE(1,10,0)
+    # Closeness similarity matrix
+    simlr2 = SIMLR.SIMLR_LARGE(1,K1,0)
     S2, F2, val2, ind2 = simlr2.fit(c_closeness)
     y_pred_X2 = simlr2.fast_minibatch_kmeans(F2,1)
 
+    # Betweenness similarity matrix
     if not np.count_nonzero(c_betweenness):
         S3 = np.zeros((len(c_betweenness), len(c_betweenness)))
     else:
-        simlr3 = SIMLR.SIMLR_LARGE(1,10,0)
+        simlr3 = SIMLR.SIMLR_LARGE(1,K1,0)
         S3, F3, val3, ind3 = simlr3.fit(c_betweenness)
         y_pred_X3 = simlr3.fast_minibatch_kmeans(F3,1)
 
-    K = 20  # number of neighbors, usually (10~30)
     alpha = 0.5 # hyperparameter, usually (0.3~0.8)
     T = 20  # Number of Iterations, usually (10~20)
 
-    wp1 = snf.make_affinity(S1.toarray(), K=K, mu=alpha)
-    wp2 = snf.make_affinity(S2.toarray(), K=K, mu=alpha)
-    wp3 = snf.make_affinity(S3, K=K, mu=alpha)
-    FSM = snf.snf([wp1, wp2, wp3], K=K, alpha=alpha, t=T) #Fused similarity matrix
+    wp1 = snf.make_affinity(S1.toarray(), K=K2, mu=alpha)
+    wp2 = snf.make_affinity(S2.toarray(), K=K2, mu=alpha)
+    wp3 = snf.make_affinity(S3, K=K2, mu=alpha)
+    FSM = snf.snf([wp1, wp2, wp3], K=K2, alpha=alpha, t=T) #Fused similarity matrix
     FSM_sorted = np.sort(FSM, axis=0)
 
     ind = np.zeros((kn,1))
@@ -137,5 +139,5 @@ def BGSR(train_data,train_labels,HR_features,kn):
          for j in range(len(HR_features[1])):
              HR_ind[i-1][j] = HR_features[int(ind[i-1][0])][j]
 
-    pHR = np.mean(HR_ind, axis=0)
+    pHR = np.mean(HR_ind, axis=0) # Predicted features of the testing subject
     return pHR
