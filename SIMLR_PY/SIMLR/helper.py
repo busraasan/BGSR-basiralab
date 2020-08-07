@@ -111,5 +111,3 @@ def fast_pca(in_X, no_dim):
     U[:] = U*np.sqrt(np.abs(s))
     D = 1/(np.sqrt(np.sum(U*U,axis = 1)+np.finfo(float).eps)+np.finfo(float).eps)
     return U*D[:,np.newaxis]
-
-

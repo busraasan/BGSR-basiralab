@@ -67,12 +67,12 @@ class SIMLR_LARGE(object):
     def nearest_neighbor_search(self, GE_csc):
         K = self.num_of_neighbor * 2
         n,d = GE_csc.shape
-        t = AnnoyIndex(d)
+        t = AnnoyIndex(d, "angular")
         for i in range(n):
             t.add_item(i,GE_csc[i,:])
         t.build(100)
         t.save('test.ann')
-        u = AnnoyIndex(d)
+        u = AnnoyIndex(d, "angular")
         u.load('test.ann')
         os.remove('test.ann')
         val = np.zeros((n,K))
@@ -156,7 +156,8 @@ class SIMLR_LARGE(object):
         A = csr_matrix((val.ravel(order='F'),(rows,cols)),shape = (n, n)) + csr_matrix((val.ravel(order='F'),(cols,rows)),shape = (n, n))
         (d,V) = linalg.eigsh(A,self.num_of_rank,which='LM')
         d = -np.sort(-np.real(d))
-        return np.real(V),d/np.max(abs(d))
+        return np.real(V), d/np.max(abs(d))
+
     def fast_minibatch_kmeans(self, X,C):
         batchsize = int(min(1000, np.round(X.shape[0]/C/C)))
         cls = MiniBatchKMeans(init='k-means++',n_clusters=C, batch_size = batchsize, n_init = 100, max_iter = 100)
