@@ -15,7 +15,7 @@ kn = 10 # Number of selected features
 
 np.seterr(divide='ignore', invalid='ignore')
 
-# Functions for Pearson Correlation by Martin Thoma.
+# Functions for Pearson Correlation coded by @dfrankov in Stack Overflow.
 def average(x):
     assert len(x) > 0
     return float(sum(x)) / len(x)

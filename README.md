@@ -16,3 +16,5 @@ sklearn
 Three functions of this library are converted to Python using networkx:
 
 Octave networks toolbox: https://github.com/aeolianine/octave-networks-toolbox
+
+Functions for Pearson Correlation coded by @dfrankov in Stack Overflow
