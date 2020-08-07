@@ -120,6 +120,6 @@ print("MAE")
 print(MAE)
 
 print("Pearson Correlation")
-print(PC)
+print(PC[0])
 
 plt.show()
