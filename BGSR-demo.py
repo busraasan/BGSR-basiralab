@@ -13,6 +13,8 @@ sigma2 = 0.6 # Standard deviation parameter of the second Gaussian distribution
 
 kn = 10 # Number of selected features
 
+np.seterr(divide='ignore', invalid='ignore')
+
 # Functions for Pearson Correlation by Martin Thoma.
 def average(x):
     assert len(x) > 0
