@@ -51,7 +51,7 @@ To test our code, you can run: BGSR_demo.py
 
 If you set the number of samples (i.e., graphs) from class 1 to 25, from class 2 to 25, the size of each graph to 60 (nodes), K1 to 10 and K2 to 20, you will get the following outputs when running the demo with default parameter setting (alpha and T (number of iterations)):
 
-![BGSR pipeline](https://github.com/busraasan/BGSR-basiralab/blob/master/results.png)
+![BGSR pipeline](https://github.com/busraasan/BGSR-basiralab/blob/master/BGSR-PY-Fig.png)
 
 
 # Acknowledgement
