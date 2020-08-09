@@ -5,7 +5,7 @@ BGSR (Brain Graph Super-Resolution) for a fast and accurate graph data classific
 While a few image super-resolution techniques have been proposed for MRI super-resolution, graph super-resolution techniques are currently absent. To this aim, we design the ﬁrst brain graph super-resolution using functional brain data with the aim to boost neurological disorder diagnosis. Our framework learns how to generate high-resolution (HR) graphs from low-resolution (LR) graphs without resorting to the computationally expensive image processing pipelines for connectome construction at high-resolution scales.
 
 
-![BGSR pipeline](https://github.com/basiralab/BGSR-basiralab/blob/master/figures/Fig1.png)
+![BGSR pipeline](https://github.com/busraasan/BGSR-basiralab/blob/master/figures/Fig1.png)
 
 # Detailed proposed BGSR pipeline
 
@@ -13,7 +13,7 @@ This work has been published in the journal. Brain Graph Super Resolution (BGSR)
 
 More details can be found at: https://www.sciencedirect.com/science/article/pii/S1361841520301328 or https://www.researchgate.net/publication/342493237_Brain_Graph_Super-Resolution_for_Boosting_Neurological_Disorder_Diagnosis_using_Unsupervised_Multi-Topology_Connectional_Brain_Template_Learning
 
-![BGSR pipeline](https://github.com/basiralab/BGSR-basiralab/blob/master/figures/Fig2.png)
+![BGSR pipeline](https://github.com/busraasan/BGSR-basiralab/blob/master/figures/Fig2.png)
 
 
 # Demo
