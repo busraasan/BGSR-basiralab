@@ -1,3 +1,17 @@
+#  This code requires Python3 to run.
+#  For more details check BGSR.py file.
+#  This is a translation into Python of BGSR MATLAB code. Link to MATLAB code: https://github.com/basiralab/BGSR
+#  To test BGSR on random data, we defined the function 'simulateData_LR_HR' where the size of the dataset is chosen by the user.
+
+#  ---------------------------------------------------------------------
+#      Copyright 2020 Busra Asan (busraasan2@gmail.com), Istanbul Technical University.
+#      Please cite the above paper if you use this code.
+#      All rights reserved.
+#      """
+#
+#   ------------------------------------------------------------------------------
+
+
 import numpy as np
 from simulate_Data_LR_HR import simulate_Data_LR_HR
 from BGSR import BGSR
@@ -63,7 +77,7 @@ while not K2:
 while K2 > c1 or K1 > c2:
     K2 = int(input('Please choose a number smaller than number of groups: '))
 
-
+#Initialization
 index = np.arange(0, len(LR_data_av_Labels))
 pHR_all = np.zeros((len(LR_data_av_Labels), len(LR_average_Featurematrix[1])))
 GT_HR = np.zeros((len(HR_data_x[1]), len(HR_data_x[1])))
@@ -118,10 +132,10 @@ for ii in range(0, len(HR_data_Featurematrix[1])):
 
 PC = pearson_def(HR_vector, pHR_all_vector)
 
-print("MAE")
+print("Mean Absolute Error:")
 print(MAE)
 
-print("Pearson Correlation")
+print("Pearson Correlation:")
 print(PC[0])
 
 plt.show()

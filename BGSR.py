@@ -1,4 +1,5 @@
-##  Main function of BGSR framework for brain graph super-resolution .
+#  Main function of BGSR framework for brain graph super-resolution.
+#  This code requires Python 3 to run.
 #  Details can be found in the original paper:Brain Graph Super-Resolution for Boosting Neurological
 #  Disorder Diagnosis using Unsupervised Multi-Topology Residual Graph Manifold Learning.
 #
@@ -36,7 +37,7 @@
 #
 # To test BGSR on random data, we defined the function 'simulateData_LR_HR' where the size of the dataset is chosen by the user.
 #  ---------------------------------------------------------------------
-#      Copyright 2020 Busra Asan, Istanbul Technical University.
+#      Copyright 2020 Busra Asan (busraasan2@gmail.com), Istanbul Technical University.
 #      Please cite the above paper if you use this code.
 #      All rights reserved.
 #      """

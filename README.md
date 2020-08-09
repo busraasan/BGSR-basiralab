@@ -1,6 +1,6 @@
 # BGSR (Brain Graph Super-Resolution)
 
-BGSR (Brain Graph Super Resolution) for a fast and accurate graph data classification code, by Islem Mhiri. Please contact islemmhiri1993@gmail.com for inquiries. Thanks.
+NAGFS (Network Atlas-Guided Feature Selection) for a fast and accurate graph data classification code, recoded by Busra Asan. Please contact busraasan2@gmail.com for further inquiries. Thanks.
 
 While a few image super-resolution techniques have been proposed for MRI super-resolution, graph super-resolution techniques are currently absent. To this aim, we design the ﬁrst brain graph super-resolution using functional brain data with the aim to boost neurological disorder diagnosis. Our framework learns how to generate high-resolution (HR) graphs from low-resolution (LR) graphs without resorting to the computationally expensive image processing pipelines for connectome construction at high-resolution scales.
 
@@ -18,7 +18,7 @@ More details can be found at: https://www.sciencedirect.com/science/article/pii/
 
 # Demo
 
-The code has been tested with MATLAB 2020a on Windows 10. GPU is not needed to run the code.
+BGSR is coded in Python 3.
 
 In this repo, we release the BGSR source code trained and tested on a simulated heterogeneous graph data from 2 Gaussian distributions as shown below:
 
@@ -42,7 +42,13 @@ The BGSR outputs are:
 
 To evaluate our framework, we used leave-one-out cross validation strategy.
 
-To test our code, you can run: BGSR_demo.m
+To test our code, you can run: BGSR_demo.py
+
+# Example Results
+
+If you set the number of samples (i.e., graphs) from class 1 to 25, from class 2 to 25, and the size of each graph to 60 (nodes), you will get the following outputs when running the demo with default parameter setting:
+
+![NAGFS pipeline]("https://github.com/basiralab/BGSR/blob/master/results.jpeg")
 
 
 # Acknowledgement
@@ -53,6 +59,8 @@ SIMLR code from https://github.com/bowang87/SIMLR_PY
 
 SNF code from https://github.com/rmarkello/snfpy
 
+We used the following libraries:
+
 networkx
 
 matplotlib
@@ -60,12 +68,11 @@ matplotlib
 sklearn
 
 
-Three functions of this library are converted to Python using networkx:
+Degrees, closeness and isDirected functions of this library are converted to Python:
 
 Octave networks toolbox: https://github.com/aeolianine/octave-networks-toolbox
 
-
-Functions for Pearson Correlation coded by @dfrankov in Stack Overflow
+Functions for Pearson Correlation coded by @dfrankov in Stack Overflow.
 
 
 # Related references
@@ -85,7 +92,7 @@ Single‐cell Interpretation via Multi‐kernel LeaRning (SIMLR): Wang, B., Rama
   publisher={Elsevier}<br/>
 }<br/>
 
-Paper link on Elsevier: 
+Paper link on Elsevier:
 https://www.sciencedirect.com/science/article/pii/S1361841520301328
 
 Paper link on ResearchGate:
@@ -96,10 +103,3 @@ Our code is released under MIT License (see LICENSE file for details).
 
 # Contributing
 We always welcome contributions to help improve BGSR and evaluate our framework on other types of graph data. If you would like to contribute, please contact islemmhiri1993@gmail.com. Many thanks.
-
-
-
-
-
-
-
