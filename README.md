@@ -48,7 +48,7 @@ To test our code, you can run: BGSR_demo.py
 
 If you set the number of samples (i.e., graphs) from class 1 to 25, from class 2 to 25, and the size of each graph to 60 (nodes), you will get the following outputs when running the demo with default parameter setting:
 
-![NAGFS pipeline]("https://github.com/basiralab/BGSR/blob/master/results.jpeg")
+![BGSR pipeline]("https://github.com/basiralab/BGSR/blob/master/results.jpeg")
 
 
 # Acknowledgement
