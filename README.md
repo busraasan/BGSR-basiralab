@@ -61,12 +61,10 @@ SNF code from https://github.com/rmarkello/snfpy
 
 We used the following libraries:
 
-networkx
-
-matplotlib
-
-sklearn
-
+- `numpy>=1.16.6`
+- `networkx>=2.4`
+- `matplotlib>=3.1.3`
+- `sklearn>=0.0`
 
 Degrees, closeness and isDirected functions of this library are converted to Python:
 
