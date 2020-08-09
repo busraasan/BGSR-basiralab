@@ -1,3 +1,7 @@
+#  Details can be found in the original paper:Brain Graph Super-Resolution for Boosting Neurological
+#  Disorder Diagnosis using Unsupervised Multi-Topology Residual Graph Manifold Learning.
+
+
 #  This code requires Python3 to run.
 #  For more details check BGSR.py file.
 #  This is a translation into Python of BGSR MATLAB code. Link to MATLAB code: https://github.com/basiralab/BGSR
