@@ -20,11 +20,11 @@ More details can be found at: https://www.sciencedirect.com/science/article/pii/
 
 BGSR is coded in Python 3.
 
-In this repo, we release the BGSR source code trained and tested on a simulated heterogeneous graph data from 2 Gaussian distributions as shown below:
+In this repo, we release the BGSR source code trained and tested on a simulated heterogeneous graph data from 2 Gaussian distributions as shown in Example Results section.
 
 **Data preparation**
 
-We simulated random graph dataset from two Gaussian distributions using the function simulateData_LR_HR.m. The number of graphs in class 1, the number graphs in class 2, and the number of nodes (must be >20) are manually inputted by the user when starting the demo.
+We simulated random graph dataset from two Gaussian distributions using the function simulateData_LR_HR.py. The number of graphs in class 1, the number graphs in class 2, and the number of nodes (must be >20) are manually inputted by the user when starting the demo.
 
 To train and evaluate BGSR code on other datasets, you need to provide:
 
@@ -32,6 +32,9 @@ To train and evaluate BGSR code on other datasets, you need to provide:
 • A vector of size (n-1) stacking the training labels.<br/>
 • A matrix (n × (m × m)) stacking the source HR brain graph.<br/>
 • Kn: the number of the most similar LR training subjects to the testing subject.<br/>
+• K1: the number of neighbors for applying SIMLR on clusters.<br/>
+• K2: the number of neighbors for applying SNF.<br/>
+
 
 The BGSR outputs are:
 
